@@ -2,94 +2,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ammie Social Hub</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #101827;
-      color: white;
-    }
-    header {
-      padding: 22px 7%;
-      background: #172337;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo { color: #f45b45; font-size: 23px; font-weight: bold; }
-    .hero {
-      padding: 75px 7%;
-      text-align: center;
-      background: linear-gradient(135deg,#172337,#263d58);
-    }
-    h1 { font-size: clamp(32px,6vw,55px); margin-bottom: 15px; }
-    .hero p { color: #c5d0df; font-size: 18px; }
-    .btn {
-      display: inline-block;
-      background: #f45b45;
-      color: white;
-      padding: 14px 25px;
-      border-radius: 8px;
-      text-decoration: none;
-      border: 0;
-      cursor: pointer;
-      margin: 10px 5px;
-    }
-    main { padding: 35px 7%; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-      gap: 20px;
-    }
-    .card {
-      background: #1b2a40;
-      padding: 25px;
-      border-radius: 12px;
-      border: 1px solid #30425a;
-    }
-    .card h3 { color: #ff826e; }
-    footer { padding: 25px; text-align: center; color: #9caabd; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ammie Social Hub</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0c1220;color:#f4f6fb;font-family:Arial,sans-serif}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#111b2d;padding:25px 17px;position:fixed;top:0;bottom:0;left:0}
+.logo{font-size:20px;font-weight:bold;color:#ff725e;margin-bottom:38px}
+.logo span{color:white}
+.nav{display:block;width:100%;padding:13px;margin:5px 0;border:0;border-radius:8px;background:transparent;color:#aab6c8;text-align:left;font-size:14px;cursor:pointer}
+.nav:hover,.nav.active{background:#263650;color:white}
+.nav.active{border-left:3px solid #ff725e}
+.sidebar small{color:#8290a5;display:block;margin:25px 12px 8px}
+.main{margin-left:245px;width:calc(100% - 245px);padding:28px 4%}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;gap:12px}
+.top h2{margin:0;font-size:23px}
+.user{background:#25334a;border-radius:30px;padding:10px 15px;font-size:13px}
+.page{display:none}.page.active{display:block}
+.welcome{margin-bottom:25px}
+.welcome p,.muted{color:#99a8bc;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px}
+.card{background:#162338;border:1px solid #293a54;border-radius:12px;padding:20px}
+.card small{color:#9aabc0}
+.number{font-size:27px;font-weight:bold;margin:12px 0}
+.green{color:#55d6a0;font-size:12px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:25px 0 15px}
+button.primary{background:#ff725e;color:white;border:0;padding:12px 18px;border-radius:8px;cursor:pointer}
+button.secondary{background:#263650;color:white;border:0;padding:11px 16px;border-radius:8px;cursor:pointer}
+.channel{display:flex;align-items:center;gap:12px;margin:13px 0}
+.circle{width:38px;height:38px;background:#263650;border-radius:50%;display:grid;place-items:center}
+input,textarea,select{width:100%;background:#101b2d;color:white;border:1px solid #35445b;padding:13px;border-radius:8px;margin:8px 0 15px}
+textarea{min-height:120px;resize:vertical}
+label{font-size:13px;color:#bac6d7}
+.post{padding:15px;background:#101b2d;border-radius:9px;margin:12px 0;border:1px solid #293a54}
+.post small{color:#99a8bc}
+.chat{height:260px;overflow:auto;background:#101b2d;padding:15px;border-radius:10px;margin:15px 0}
+.message{background:#263650;padding:12px;border-radius:9px;margin:10px 0;max-width:90%}
+.message.user{margin-left:auto;background:#354761}
+.notice{color:#aebbd0;background:#202f45;padding:13px;border-radius:8px;font-size:13px}
+.empty{padding:25px;text-align:center;color:#9aabc0}
+@media(max-width:700px){
+.sidebar{width:65px;padding:18px 7px}
+.logo{font-size:0;text-align:center;margin-bottom:25px}
+.logo:first-letter{font-size:22px}
+.nav{font-size:0;text-align:center;padding:13px 2px}
+.nav::first-letter{font-size:18px}
+.sidebar small{font-size:0;margin:20px 0}
+.main{margin-left:65px;width:calc(100% - 65px);padding:20px 12px}
+.top h2{font-size:18px}
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="logo">AMMIE SOCIAL HUB</div>
-    <div>Social Media Management</div>
-  </header>
+<div class="app">
+<aside class="sidebar">
+<div class="logo">AMMIE <span>HUB</span></div>
+<button class="nav active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+<button class="nav" onclick="showPage('accounts',this)">🌐 Social Accounts</button>
+<button class="nav" onclick="showPage('composer',this)">✍️ Create Post</button>
+<button class="nav" onclick="showPage('calendar',this)">📅 Content Calendar</button>
+<button class="nav" onclick="showPage('analytics',this)">📊 Analytics</button>
+<small>TOOLS</small>
+<button class="nav" onclick="showPage('assistant',this)">🤖 AI Assistant</button>
+<button class="nav" onclick="showPage('settings',this)">⚙️ Settings</button>
+</aside>
 
-  <section class="hero">
-    <h1>Manage Your Social World</h1>
-    <p>Plan, manage and grow your social media from one place.</p>
-    <a class="btn" href="#features">Explore Platform</a>
-    <a class="btn" href="mailto:hello@ammiesocialhub.com">Contact Us</a>
-  </section>
+<main class="main">
+<div class="top">
+<h2 id="pageTitle">Dashboard</h2>
+<div class="user">AMMIE SOCIAL HUB</div>
+</div>
 
-  <main id="features">
-    <h2>Everything in One Hub</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Social Dashboard</h3>
-        <p>See your social media activity in one place.</p>
-      </div>
-      <div class="card">
-        <h3>Content Planner</h3>
-        <p>Organise your content and plan future posts.</p>
-      </div>
-      <div class="card">
-        <h3>AI Assistant</h3>
-        <p>Prepare captions and content ideas with AI.</p>
-      </div>
-      <div class="card">
-        <h3>Analytics</h3>
-        <p>Understand your growth and content performance.</p>
-      </div>
-    </div>
-  </main>
+<section class="page active" id="dashboard">
+<div class="welcome">
+<h2>Welcome to your Social Hub 👋</h2>
+<p>Manage your content and grow your social presence from one place.</p>
+</div>
+<div class="grid">
+<div class="card"><small>Total followers</small><div class="number">--</div><small>Connect accounts to see data</small></div>
+<div class="card"><small>Total engagement</small><div class="number">--</div><small>Live analytics coming soon</small></div>
+<div class="card"><small>Scheduled posts</small><div class="number" id="scheduledCount">0</div><small>Your saved content</small></div>
+<div class="card"><small>Connected accounts</small><div class="number">0</div><small>Connect your channels</small></div>
+</div>
+<div class="section-title"><h3>Quick actions</h3></div>
+<div class="grid">
+<div class="card"><h3>✍️ Create content</h3><p class="muted">Prepare your next social media post.</p><button class="primary" onclick="showPage('composer')">Create post</button></div>
+<div class="card"><h3>🤖 AI Assistant</h3><p class="muted">Prepare ideas and captions with AI.</p><button class="primary" onclick="showPage('assistant')">Open assistant</button></div>
+<div class="card"><h3>🌐 Social accounts</h3><p class="muted">Manage your social channels.</p><button class="primary" onclick="showPage('accounts')">Manage accounts</button></div>
+</div>
+<div class="section-title"><h3>Recent posts</h3></div>
+<div id="recentPosts"><div class="empty">Your posts will appear here.</div></div>
+</section>
 
-  <footer>© 2026 Ammie Social Hub. All rights reserved.</footer>
+<section class="page" id="accounts">
+<h3>Your social accounts</h3>
+<p class="muted">Connect your channels to manage them from one place.</p>
+<div class="grid">
+<div class="card"><h3>📘 Facebook</h3><p class="muted">Pages and publishing</p><button class="secondary" onclick="connectNotice()">Connect account</button></div>
+<div class="card"><h3>📸 Instagram</h3><p class="muted">Posts and insights</p><button class="secondary" onclick="connectNotice()">Connect account</button></div>
+<div class="card"><h3>🎵 TikTok</h3><p class="muted">Video publishing</p><button class="secondary" onclick="connectNotice()">Connect account</button></div>
+<div class="card"><h3>▶️ YouTube</h3><p class="muted">Channel management</p><button class="secondary" onclick="connectNotice()">Connect account</button></div>
+</div>
+<div class="notice">Account connections require official platform authorization and API approval. These buttons are currently demonstrations, not live connections.</div>
+</section>
+
+<section class="page" id="composer">
+<h3>Create a post</h3>
+<p class="muted">Prepare your content before publishing.</p>
+<label>Post title</label>
+<input id="postTitle" placeholder="Give your post a title">
+<label>Choose platform</label>
+<select id="platform">
+<option>Facebook</option><option>Instagram</option><option>TikTok</option><option>YouTube</option>
+</select>
+<label>Caption / post content</label>
+<textarea id="postContent" placeholder="What would you like to share?"></textarea>
+<label>Schedule date (optional)</label>
+<input type="datetime-local" id="postDate">
+<button class="primary" onclick="savePost()">Save post</button>
+<div class="notice">This saves a local draft in this browser. It does not publish to social media yet.</div>
+</section>
+
+<section class="page" id="calendar">
+<h3>Content calendar</h3>
+<p class="muted">Your saved posts and planned content.</p>
+<div id="calendarPosts"><div class="empty">No posts planned yet.</div></div>
+</section>
+
+<section class="page" id="analytics">
+<h3>Social media analytics</h3>
+<p class="muted">Your performance overview will appear here once accounts are connected.</p>
+<div class="grid">
+<div class="card"><small>Reach</small><div class="number">--</div></div>
+<div class="card"><small>Impressions</small><div class="number">--</div></div>
+<div class="card"><small>Engagement rate</small><div class="number">--</div></div>
+</div>
+<div class="notice">Live analytics are not connected yet. We will integrate the official platform APIs.</div>
+</section>
+
+<section class="page" id="assistant">
+<h3>🤖 Ammie AI Assistant</h3>
+<p class="muted">Your social media content assistant.</p>
+<div class="chat" id="chat">
+<div class="message">Hello! I'm your Ammie Social Hub assistant interface. The secure ChatGPT API connection will be activated after backend setup.</div>
+</div>
+<label>Ask your AI assistant</label>
+<input id="aiQuestion" placeholder="Example: Write a caption for my new video">
+<button class="primary" onclick="askAI()">Send message</button>
+<div class="notice">AI connection is not active yet. We will connect it securely using your OpenAI API key on the server, not in this page.</div>
+</section>
+
+<section class="page" id="settings">
+<h3>Platform settings</h3>
+<div class="card">
+<h3>Ammie Social Hub</h3>
+<p class="muted">Your social media management workspace.</p>
+<p>Account system: Coming soon</p>
+<p>Database: Supabase connection pending</p>
+<p>AI: ChatGPT API connection pending</p>
+</div>
+</section>
+</main>
+</div>
+<script>
+const pages=['dashboard','accounts','composer','calendar','analytics','assistant','settings'];
+const titles={dashboard:'Dashboard',accounts:'Social Accounts',composer:'Create Post',calendar:'Content Calendar',analytics:'Analytics',assistant:'AI Assistant',settings:'Settings'};
+function showPage(page,button){
+pages.forEach(p=>document.getElementById(p).classList.toggle('active',p===page));
+document.getElementById('pageTitle').textContent=titles[page];
+document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+if(button)button.classList.add('active');
+}
+function getPosts(){try{return JSON.parse(localStorage.getItem('ammiePosts')||'[]')}catch(e){return []}}
+function savePost(){
+const title=document.getElementById('postTitle').value.trim();
+const content=document.getElementById('postContent').value.trim();
+if(!content){alert('Please write your post first.');return}
+const post={title:title||'Untitled post',content,platform:document.getElementById('platform').value,date:document.getElementById('postDate').value};
+const posts=getPosts();posts.unshift(post);
+localStorage.setItem('ammiePosts',JSON.stringify(posts));
+document.getElementById('postTitle').value='';
+document.getElementById('postContent').value='';
+document.getElementById('postDate').value='';
+renderPosts();showPage('calendar');
+}
+function renderPosts(){
+const posts=getPosts();
+document.getElementById('scheduledCount').textContent=posts.length;
+const html=posts.map(p=>`<div class="post"><b>${escapeText(p.title)}</b><p>${escapeText(p.content)}</p><small>${escapeText(p.platform)} · ${p.date?escapeText(p.date):'Draft'}</small></div>`).join('');
+document.getElementById('recentPosts').innerHTML=html||'<div class="empty">Your posts will appear here.</div>';
+document.getElementById('calendarPosts').innerHTML=html||'<div class="empty">No posts planned yet.</div>';
+}
+function escapeText(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function connectNotice(){alert('Social account authorization will be added in the next development stage.')}
+function askAI(){
+const input=document.getElementById('aiQuestion');
+const question=input.value.trim();if(!question)return;
+const chat=document.getElementById('chat');
+const message=document.createElement('div');message.className='message user';message.textContent=question;chat.appendChild(message);
+const reply=document.createElement('div');reply.className='message';reply.textContent='Your question is ready. ChatGPT will respond here once we connect the secure OpenAI backend.';chat.appendChild(reply);
+input.value='';chat.scrollTop=chat.scrollHeight;
+}
+renderPosts();
+</script>
 </body>
 </html>
