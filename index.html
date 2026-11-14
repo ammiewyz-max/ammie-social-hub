@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ammie Social Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+    }
+    header {
+      padding: 22px 7%;
+      background: #172337;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { color: #f45b45; font-size: 23px; font-weight: bold; }
+    .hero {
+      padding: 75px 7%;
+      text-align: center;
+      background: linear-gradient(135deg,#172337,#263d58);
+    }
+    h1 { font-size: clamp(32px,6vw,55px); margin-bottom: 15px; }
+    .hero p { color: #c5d0df; font-size: 18px; }
+    .btn {
+      display: inline-block;
+      background: #f45b45;
+      color: white;
+      padding: 14px 25px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 0;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+    main { padding: 35px 7%; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #1b2a40;
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid #30425a;
+    }
+    .card h3 { color: #ff826e; }
+    footer { padding: 25px; text-align: center; color: #9caabd; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">AMMIE SOCIAL HUB</div>
+    <div>Social Media Management</div>
+  </header>
+
+  <section class="hero">
+    <h1>Manage Your Social World</h1>
+    <p>Plan, manage and grow your social media from one place.</p>
+    <a class="btn" href="#features">Explore Platform</a>
+    <a class="btn" href="mailto:hello@ammiesocialhub.com">Contact Us</a>
+  </section>
+
+  <main id="features">
+    <h2>Everything in One Hub</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Social Dashboard</h3>
+        <p>See your social media activity in one place.</p>
+      </div>
+      <div class="card">
+        <h3>Content Planner</h3>
+        <p>Organise your content and plan future posts.</p>
+      </div>
+      <div class="card">
+        <h3>AI Assistant</h3>
+        <p>Prepare captions and content ideas with AI.</p>
+      </div>
+      <div class="card">
+        <h3>Analytics</h3>
+        <p>Understand your growth and content performance.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2026 Ammie Social Hub. All rights reserved.</footer>
+</body>
+</html>
