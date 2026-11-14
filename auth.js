@@ -1,8 +1,8 @@
 
-const supabase = window.supabaseClient;
-
 document.addEventListener("DOMContentLoaded", async () => {
-  if (!supabase) {
+  const client = window.supabaseClient;
+
+  if (!client) {
     alert("Supabase connection failed. Check supabase.js");
     return;
   }
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const style = document.createElement("style");
   style.textContent = `
     #authScreen {
-      position:fixed; inset:0; z-index:9999;
+      position:fixed; inset:0; z-index:99999;
       background:#0c1220; display:flex;
       align-items:center; justify-content:center;
       padding:20px; font-family:Arial,sans-serif;
@@ -31,8 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     .authBox button {
       width:100%;padding:13px;margin-top:10px;
       border:0;border-radius:8px;
-      background:#ff725e;color:white;
-      cursor:pointer;font-weight:bold;
+      background:#ff725e;color:white;cursor:pointer;
     }
     #authMessage {color:#ffb5a9;font-size:13px}
   `;
@@ -43,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   screen.innerHTML = `
     <div class="authBox">
       <h2>AMMIE <span style="color:#ff725e">HUB</span></h2>
-      <p>Sign in or create your Social Hub account.</p>
+      <p>Sign in or create your account.</p>
       <input id="authEmail" type="email" placeholder="Email address">
       <input id="authPassword" type="password" placeholder="Password (minimum 6 characters)">
       <button id="loginBtn">Sign in</button>
@@ -55,15 +54,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const message = document.getElementById("authMessage");
 
-  async function checkSession() {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) {
-      message.textContent = error.message;
-      return;
-    }
-    if (data.session) {
-      screen.remove();
-    }
+  const { data, error } = await client.auth.getSession();
+
+  if (error) {
+    message.textContent = error.message;
+  } else if (data.session) {
+    screen.remove();
   }
 
   document.getElementById("loginBtn").onclick = async () => {
@@ -77,9 +73,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     message.textContent = "Signing in...";
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password
+    const { error } = await client.auth.signInWithPassword({
+      email, password
     });
 
     if (error) {
@@ -100,28 +95,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     message.textContent = "Creating account...";
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password
+    const { data, error } = await client.auth.signUp({
+      email, password
     });
 
     if (error) {
       message.textContent = error.message;
-      return;
-    }
-
-    if (data.session) {
+    } else if (data.session) {
       screen.remove();
     } else {
-      message.textContent = "Account created. Check your email to confirm, then sign in.";
+      message.textContent = "Account created! Check your email to confirm.";
     }
   };
 
-  await checkSession();
-
-  supabase.auth.onAuthStateChange((event) => {
-    if (event === "SIGNED_OUT") {
-      location.reload();
-    }
+  client.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_OUT") location.reload();
   });
 });
