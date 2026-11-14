@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const client = window.supabaseClient;
+  const client = supabaseClient;
 
   if (!client) {
     alert("Supabase connection failed. Check supabase.js");
